@@ -22,10 +22,10 @@ function validaCpf(cpf) {
   let cpflimpo = cpf.replace(/\D+/g, '').substring(0, 9);// (/\D+/g) = expressão matematica para um não números  
   var cpfSemDigitos = (Array.from(cpflimpo)).map(i => Number(i));
 
-  let primeiroDigito = 11 - (calculaDigito(cpfSemDigitos) % 11);
+  let primeiroDigito = calculaDigito(cpfSemDigitos);
   cpfSemDigitos.push(primeiroDigito);
 
-  let segundoDigito = 11 - (calculaDigito(cpfSemDigitos) % 11);
+  let segundoDigito = calculaDigito(cpfSemDigitos);
   cpfSemDigitos.push(segundoDigito);
 
   let cpfOriginal = cpf.replace(/\D+/g, '');
@@ -37,16 +37,16 @@ function validaCpf(cpf) {
   else {
     return false;
   }
-
-
-
-
-
+  
   function calculaDigito(arrCpf) {
-    let resultado = 0;
+    let somaRecursiva = 0;
     let j = 0;
     for (let i = arrCpf.length + 1; i > 1; i--, j++) {
-      resultado += arrCpf[j] * i;
+      somaRecursiva += arrCpf[j] * i;
+    }
+    let resultado = 11 - (somaRecursiva % 11);
+    if (resultado > 9) {
+      resultado = 0;
     }
     return resultado;
   }

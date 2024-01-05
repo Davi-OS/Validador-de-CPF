@@ -15,9 +15,39 @@
 // concatenar os digitos e comparar com o cpf original
 
 let cpf = "705.484.450-52";
-validaCpf(cpf);
+console.log(validaCpf(cpf));
+
+
 function validaCpf(cpf) {
-    let cpflimpo = cpf.replace(/\D+/g, ''); // (/\D+/g) = expressão matematica para um não número  
-    var arrCpf = (Array.from(cpflimpo)).map(i => Number(i));
-    console.log(arrCpf);
+  let cpflimpo = cpf.replace(/\D+/g, '').substring(0, 9);// (/\D+/g) = expressão matematica para um não números  
+  var cpfSemDigitos = (Array.from(cpflimpo)).map(i => Number(i));
+
+  let primeiroDigito = 11 - (calculaDigito(cpfSemDigitos) % 11);
+  cpfSemDigitos.push(primeiroDigito);
+
+  let segundoDigito = 11 - (calculaDigito(cpfSemDigitos) % 11);
+  cpfSemDigitos.push(segundoDigito);
+
+  let cpfOriginal = cpf.replace(/\D+/g, '');
+  let cpfGerado = cpfSemDigitos.toString().replaceAll(',', '');
+
+  if (cpfOriginal === cpfGerado) {
+    return true;
+  }
+  else {
+    return false;
+  }
+
+
+
+
+
+  function calculaDigito(arrCpf) {
+    let resultado = 0;
+    let j = 0;
+    for (let i = arrCpf.length + 1; i > 1; i--, j++) {
+      resultado += arrCpf[j] * i;
+    }
+    return resultado;
+  }
 }
